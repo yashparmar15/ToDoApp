@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        .center{
+            background-color: #C5C9B8;
+            width: 100%;
+            color: #333333;
+            height: 100vh;
+            margin: 0 auto;
+            overflow: hidden;
+            padding: 10px 0;
+            align-items: center;
+            justify-content: space-around;
+            display: flex;
+            float: none;
+        }
+        .font{
+            font-size: 25px;
+            font-weight: bold;
+        }
+        @media screen and (max-width:640px){
+            .center{
+            background-color: #C5C9B8;
+            width: 100%;
+            color: #333333;
+            height: auto;
+            margin: 0 auto;
+            overflow: hidden;
+            padding: 10px 0;
+            align-items: center;
+            justify-content: space-around;
+            display: flex;
+            float: none;
+        }
+        }
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+  <title>To Do App</title>
+</head>
+<body>
+    
+    <div class="center">
+        <div class="card-deck ">
+            <div class="card border-primary mb-3 text-center" style="width: 22rem; height:60vh;">
+                <div class="card-header bg-primary font">To Do</div>
+                <div class="card-body text-primary" style="overflow-y: auto;">
+                    <button type="button" id="todo" class="btn btn-dark" data-toggle="modal" data-target="#todomodal" data-whatever="@mdo">Add Task</button>
+                    
+                    {% for task1 in todo_task %}
+                    <div style="margin-top: 10px;" >
+                        <div class="card">
+                          <div class="card-body">
+                            <h5 class="card-title">{{task1['task']}}</h5>
+                            <p class="card-text">{{task1['descrip']}}</p>
+                            <a href="{{ url_for('del_todo', id=task1['id']) }}" class="btn btn-dark btn-sm ">Remove</a>
+                            <a href="{{ url_for('move_doing', id=task1['id']) }}" class="btn btn-warning btn-sm">Let's Do</a>
+                            
+                          </div>
+                        </div>
+                      </div>
+                      {% endfor %}
+                      
+
+                  </div>
+              </div>
+              <div class="modal fade" id="todomodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header bg-primary">
+                      <h5 class="modal-title " id="exampleModalLabel">Add Task</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <form action="/todo" method="POST">
+                        <div class="form-group">
+                          <label for="todo-task" class="col-form-label">Task:</label>
+                          <input type="text" class="form-control" id="todo-task" name="task_todo"> <!---->
+                        </div>
+                        <div class="form-group">
+                          <label for="todo-text" class="col-form-label">Description:</label>
+                          <textarea class="form-control" id="todo-text" name="todo_d"></textarea>
+                        </div>
+                      
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+                      <button type="submit" class="btn btn-primary">Add Task</button>
+                    </div>
+                </form>
+                  </div>
+                </div>
+              </div>
+              <div class="card border-warning mb-3 text-center" style="width: 22rem; height:60vh;">
+                <div class="card-header bg-warning font">Doing</div>
+                <div class="card-body text-warning" style="overflow-y: auto;">
+                    <button type="button" id="doing" class="btn btn-dark" data-toggle="modal" data-target="#doingmodal" data-whatever="@mdo">Add Task</button>
+
+                    {% for task1 in doing_task %}
+                    <div style="margin-top: 10px;" >
+                        <div class="card">
+                          <div class="card-body">
+                            <h5 class="card-title">{{task1['task']}}</h5>
+                            <p class="card-text">{{task1['descrip']}}</p>
+                            <a href="{{ url_for('move_todo', id=task1['id']) }}" class="btn btn-primary btn-sm">Later</a>
+                            <a href="{{ url_for('move_done', id=task1['id']) }}" class="btn btn-success btn-sm">Done</a>
+                            
+                          </div>
+                        </div>
+                      </div>
+                      {% endfor %}
+                </div>
+              </div>
+              <div class="modal fade" id="doingmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header bg-warning">
+                      <h5 class="modal-title" id="exampleModalLabel">Add Task</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <form action="/doing" method="POST">
+                        <div class="form-group">
+                          <label for="doing-name" class="col-form-label" >Task:</label>
+                          <input type="text" class="form-control" id="doing-name" name="doing_task">
+                        </div>
+                        <div class="form-group">
+                          <label for="doing-text" class="col-form-label">Description:</label>
+                          <textarea class="form-control" id="doing-text" name="doing_d"></textarea>
+                        </div>
+                      
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+                      <button type="submit" class="btn btn-warning">Add Task</button>
+                    </div>
+                </form>
+                  </div>
+                </div>
+              </div>
+              <div class="card border-success mb-3 text-center  " style="width: 22rem; height:60vh;">
+                <div class="card-header bg-success font">Done</div>
+                <div class="card-body text-success" style="overflow-y: auto;">
+                    <button type="button" id="done" class="btn btn-dark" data-toggle="modal" data-target="#donemodal" data-whatever="@mdo">Add Task</button>
+                    {% for task1 in done_task %}
+                    <div style="margin-top: 10px;" >
+                        <div class="card">
+                          <div class="card-body">
+                            <h5 class="card-title">{{task1['task']}}</h5>
+                            <p class="card-text">{{task1['descrip']}}</p>
+                            <a href="{{ url_for('move_todo1', id=task1['id']) }}" class="btn btn-primary btn-sm">Later</a>
+                            <a href="{{ url_for('del_done', id=task1['id']) }}" class="btn btn-dark btn-sm">Remove</a>
+                            
+                          </div>
+                        </div>
+                      </div>
+                      {% endfor %}
+                </div>
+              </div>
+              <div class="modal fade" id="donemodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header bg-success">
+                      <h5 class="modal-title" id="exampleModalLabel">Add Task</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div action="done" method="POST">
+                    <div class="modal-body">
+                      <form action="/done" method="POST">
+                        <div class="form-group">
+                          <label for="done-name" class="col-form-label">Task:</label>
+                          <input type="text" class="form-control" id="done-name" name="done_task">
+                        </div>
+                        <div class="form-group">
+                          <label for="done-text" class="col-form-label">Description:</label>
+                          <textarea class="form-control" id="done-text" name="done_d"></textarea>
+                        </div>
+                      
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+                      <button type="submit" class="btn btn-success">Add Task</button>
+                    </div>
+                </form>
+                  </div>
+                </div>
+              </div>
+        </div>
+    </div>
+    
+      
+</body>
+</html>

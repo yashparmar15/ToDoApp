@@ -77,6 +77,7 @@ def del_done(id):
 @app.route('/move_doing/<id>')
 def move_doing(id):
     db1 = get_db()
+    print("*")
     db2 = get_db()
     db3 = get_db()
     task = db1.execute('select task,descrip from ToDo where id=?',[id])
